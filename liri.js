@@ -22,7 +22,7 @@ var client = new Twitter({
 });
 
 client.post("statuses/update", {status: "I am not a bot"}, function(error, tweet, response) {
-	if(error) throw "Unable to retrieve information";
+	if(error) throw "Unable to post information";
 	console.log(tweet);
 	console.log(response);
 });
