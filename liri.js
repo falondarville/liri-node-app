@@ -1,25 +1,38 @@
 require("dotenv").config();
 
 //add code required to import keys.js file and store it in a variable
-// import ("keys.js");
+var keys = require("./keys.js");
 
 //require apis
 var Spotify = require("node-spotify-api");
 var Twitter = require("twitter");
 
-//this is how I will access key information
+//access key information
 //Spotify
-var spotify = new Spotify(keys.spotify.id);
-var spotifySecret = new Spotify(keys.spotify.secret);
-//Twitter
-var client = new Twitter(keys.twitter);
+var spotify = new Spotify({
+	id: keys.spotify.id,
+	secret: keys.spotify.secret
+});
+// Twitter
+var client = new Twitter({
+	consumer_key: keys.twitter.consumer_key,
+	consumer_secret: keys.twitter.consumer_secret,
+	access_token_key: keys.twitter.access_token_key,
+	access_token_secret: keys.twitter.access_token_secret
+});
 
-spotify.search({type: "track", query: "All the Small Things"}, function(err, data) {
-	if (err) {
-		return console.log("Error occured: " + err);
-	}
-	console.log(data);
-})
+client.post("statuses/update", {status: "I am not a bot"}, function(error, tweet, response) {
+	if(error) throw "Unable to retrieve information";
+	console.log(tweet);
+	console.log(response);
+});
+
+// spotify.search({type: "track", query: "All the Small Things"}, function(err, data) {
+// 	if (err) {
+// 		return console.log("Error occured: " + err);
+// 	}
+// 	console.log(data);
+// })
 
 //commands that liri will understand 
 
