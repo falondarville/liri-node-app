@@ -1,10 +1,25 @@
 require("dotenv").config();
 
 //add code required to import keys.js file and store it in a variable
+// import ("keys.js");
+
+//require apis
+var Spotify = require("node-spotify-api");
+var Twitter = require("twitter");
 
 //this is how I will access key information
-var spotify = new Spotify(keys.spotify);
+//Spotify
+var spotify = new Spotify(keys.spotify.id);
+var spotifySecret = new Spotify(keys.spotify.secret);
+//Twitter
 var client = new Twitter(keys.twitter);
+
+spotify.search({type: "track", query: "All the Small Things"}, function(err, data) {
+	if (err) {
+		return console.log("Error occured: " + err);
+	}
+	console.log(data);
+})
 
 //commands that liri will understand 
 
