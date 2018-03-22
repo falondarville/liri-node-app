@@ -31,7 +31,7 @@ client.get("statuses/user_timeline", params, function(error, tweet, response) {
 
 	if(error) throw error;
 	for (var i = 0; i < tweet.length; i++) {
-		console.log(tweet[i].text + "\n");
+		console.log(tweet[i].created_at + "\n" + tweet[i].text + "\n");
 	}
 });
 }
