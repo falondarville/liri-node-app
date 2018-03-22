@@ -1,11 +1,8 @@
 require("dotenv").config();
+var fs = require("fs");
 
 //add code required to import keys.js file and store it in a variable
 var keys = require("./keys.js");
-
-// add the fs npm package and add command do-what-it-says
-// this command takes the text inside random.txt and uses it to call on of LIRI's commands
-// have it run spotify-this-song "I Want it That Way"
 
 //require apis
 var Spotify = require("node-spotify-api");
@@ -79,5 +76,15 @@ if (process.argv[2] == "movie-this") {
 		console.log("Movie title: " + movie + "\n" + "Year: " + year + "\n" + "IMBD Rating: " + IMDBrating + "\n" + "Rotten Tomatoes Rating: " + RTrating + "\n" + "Country: " + country + "\n" + "Language: " + language + "\n" + "Plot: " + plot + "\n" + "Actors: " + actors);
 	}
 });
+}
 
-} 
+if (process.argv[2] == "do-what-it-says") {
+
+	fs.readFile("./random.txt", "utf8", function(error, data){
+		if (error) throw error;
+		//currently reads the text as text, not a command
+		//"spotify-this-song,"I Want it That Way"
+		console.log(data.split(","));
+	});
+};
+
