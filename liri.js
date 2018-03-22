@@ -22,16 +22,19 @@ var client = new Twitter({
 	access_token_secret: keys.twitter.access_token_secret
 });
 
-var params = {screen_name: 'nodejs', count: 20};
+//add when the tweets were created
+
+if (process.argv[2] == "my-tweets") {
+var params = {screen_name: 'RavinaDolfell', count: 20};
 
 client.get("statuses/user_timeline", params, function(error, tweet, response) {
 
-	if(!error) {
-		console.log(tweet);
-	} else {
-		console.log(error);
+	if(error) throw error;
+	for (var i = 0; i < tweet.length; i++) {
+		console.log(tweet[i].text + "\n");
 	}
 });
+}
 
 // spotify.search({type: "track", query: "All the Small Things"}, function(err, data) {
 // 	if (err) {
