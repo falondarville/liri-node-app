@@ -3,18 +3,22 @@ require("dotenv").config();
 //add code required to import keys.js file and store it in a variable
 var keys = require("./keys.js");
 
+// add the fs npm package and add command do-what-it-says
+// this command takes the text inside random.txt and uses it to call on of LIRI's commands
+// have it run spotify-this-song "I Want it That Way"
+
 //require apis
 var Spotify = require("node-spotify-api");
 var Twitter = require("twitter");
 var request = require("request");
 
-//access key information
-//Spotify
+//Spotify access keys
 var spotify = new Spotify({
 	id: keys.spotify.id,
 	secret: keys.spotify.secret
 });
-// Twitter
+
+//Twitter access keys
 var client = new Twitter({
 	consumer_key: keys.twitter.consumer_key,
 	consumer_secret: keys.twitter.consumer_secret,
@@ -22,8 +26,7 @@ var client = new Twitter({
 	access_token_secret: keys.twitter.access_token_secret
 });
 
-//add when the tweets were created
-
+//print last 20 tweets
 if (process.argv[2] == "my-tweets") {
 var params = {screen_name: 'RavinaDolfell', count: 20};
 
@@ -36,20 +39,24 @@ client.get("statuses/user_timeline", params, function(error, tweet, response) {
 });
 }
 
-// spotify.search({type: "track", query: "All the Small Things"}, function(err, data) {
-// 	if (err) {
-// 		return console.log("Error occured: " + err);
-// 	}
-// 	console.log(data);
-// })
+//print information regarding inputted song title
+if (process.argv[2] == "spotify-this-song") {
 
-//my-tweets will show the last 20 tweets and when they were created
+	var song = process.argv[3] || "The Sign Ace of Base";
 
-//spotify-this-song "name of song" will show artist, song name, preview link to the song on Spotify, album
+	spotify.search({type: "track", query: song, limit: 1}, function(error, data) {
+		if (error) throw error;
 
-//default song is "The Sign" by Ace of Base
+		for (var i = 0; i < data.tracks.items[0].artists.length; i++) {
+			console.log(data.tracks.items[0].artists[i].name + "\n");
+		}
+		console.log(data.tracks.items[0].name + "\n");
+		console.log(data.tracks.items[0].preview_url + "\n");
+		console.log(data.tracks.items[0].album.name + "\n");
+	});
+}
 
-//OMDB request
+//print movie information given inputted movie title
 if (process.argv[2] == "movie-this") {
 
 	var movieTitle = process.argv[3] || "Mr. Nobody";
