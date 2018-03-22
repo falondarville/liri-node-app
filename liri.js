@@ -84,7 +84,8 @@ if (process.argv[2] == "do-what-it-says") {
 		if (error) throw error;
 		//currently reads the text as text, not a command
 		//"spotify-this-song,"I Want it That Way"
+		//breaks the string into an array of two items to be used as arguments
 		console.log(data.split(","));
 	});
-};
+}
 
