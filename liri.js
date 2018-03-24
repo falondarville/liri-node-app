@@ -25,20 +25,27 @@ var client = new Twitter({
 
 //print last 20 tweets
 if (process.argv[2] == "my-tweets") {
-var params = {screen_name: 'RavinaDolfell', count: 20};
+	tweetThis();
+}
 
-client.get("statuses/user_timeline", params, function(error, tweet, response) {
+function tweetThis(){
+	var params = {screen_name: 'RavinaDolfell', count: 20};
 
-	if(error) throw error;
-	for (var i = 0; i < tweet.length; i++) {
-		console.log(tweet[i].created_at + "\n" + tweet[i].text + "\n");
-	}
-});
+	client.get("statuses/user_timeline", params, function(error, tweet, response) {
+
+		if(error) throw error;
+		for (var i = 0; i < tweet.length; i++) {
+			console.log(tweet[i].created_at + "\n" + tweet[i].text + "\n");
+		}
+	});
 }
 
 //print information regarding inputted song title
 if (process.argv[2] == "spotify-this-song") {
+	spotifyThis();
+}
 
+function spotifyThis(){
 	var song = process.argv[3] || "The Sign Ace of Base";
 
 	spotify.search({type: "track", query: song, limit: 1}, function(error, data) {
@@ -55,6 +62,10 @@ if (process.argv[2] == "spotify-this-song") {
 
 //print movie information given inputted movie title
 if (process.argv[2] == "movie-this") {
+	movieThis();
+}
+
+function movieThis(){
 
 	var movieTitle = process.argv[3] || "Mr. Nobody";
 
@@ -82,10 +93,23 @@ if (process.argv[2] == "do-what-it-says") {
 
 	fs.readFile("./random.txt", "utf8", function(error, data){
 		if (error) throw error;
-		//currently reads the text as text, not a command
-		//"spotify-this-song,"I Want it That Way"
-		//breaks the string into an array of two items to be used as arguments
+
 		console.log(data.split(","));
+		console.log(data[0]);
+
+		switch(data[0]) {
+			case "my-tweets":
+				tweetThis();
+				break;
+			case "spotify-this-song":
+				song = data[1];
+				spotifyThis();
+				break;
+			case "movie-this":
+				movieTitle = data[1];
+				movieThis();
+				break;
+		}
 	});
 }
 
