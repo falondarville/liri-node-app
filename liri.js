@@ -94,7 +94,7 @@ if (process.argv[2] == "do-what-it-says") {
 	fs.readFile("./random.txt", "utf8", function(error, data){
 		if (error) throw error;
 
-		console.log(data.split(","));
+		data = data.split(",");
 		console.log(data[0]);
 
 		switch(data[0]) {
