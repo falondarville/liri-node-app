@@ -45,14 +45,17 @@ if (process.argv[2] == "spotify-this-song") {
 	spotifyThis();
 }
 
-function spotifyThis(){
-	var song = process.argv[3] || "The Sign Ace of Base";
+function spotifyThis(forcedSong){
+
+	var song = forcedSong || process.argv[3] || "The Sign Ace of Base";
 
 	spotify.search({type: "track", query: song, limit: 1}, function(error, data) {
 		if (error) throw error;
 
-		for (var i = 0; i < data.tracks.items[0].artists.length; i++) {
+		if (data.tracks.items.length > 0){
+			for (var i = 0; i < data.tracks.items[0].artists.length; i++) {
 			console.log(data.tracks.items[0].artists[i].name + "\n");
+			}
 		}
 		console.log(data.tracks.items[0].name + "\n");
 		console.log(data.tracks.items[0].preview_url + "\n");
@@ -65,9 +68,9 @@ if (process.argv[2] == "movie-this") {
 	movieThis();
 }
 
-function movieThis(){
+function movieThis(forcedMovie){
 
-	var movieTitle = process.argv[3] || "Mr. Nobody";
+	var movieTitle = forcedMovie || process.argv[3] || "Mr. Nobody";
 
 	request("http://www.omdbapi.com/?apikey=trilogy&t=" + movieTitle, function(error, response, body) {
 
@@ -89,27 +92,24 @@ function movieThis(){
 });
 }
 
+//print information given the command and input in the random.txt file
 if (process.argv[2] == "do-what-it-says") {
 
 	fs.readFile("./random.txt", "utf8", function(error, data){
 		if (error) throw error;
 
 		data = data.split(",");
-		console.log(data[0]);
 
 		switch(data[0]) {
 			case "my-tweets":
 				tweetThis();
 				break;
 			case "spotify-this-song":
-				song = data[1];
-				spotifyThis();
+				spotifyThis(data[1]);
 				break;
 			case "movie-this":
-				movieTitle = data[1];
-				movieThis();
+				movieThis(data[1]);
 				break;
 		}
 	});
 }
-
